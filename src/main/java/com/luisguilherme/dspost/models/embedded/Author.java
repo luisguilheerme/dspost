@@ -1,5 +1,7 @@
 package com.luisguilherme.dspost.models.embedded;
 
+import com.luisguilherme.dspost.models.entities.User;
+
 public class Author {
 	
 	private String id;
@@ -14,7 +16,7 @@ public class Author {
 		this.name = name;
 	}
 	
-	public Author(Author entity) {
+	public Author(User entity) {
 		id = entity.getId();
 		name = entity.getName();
 	}

@@ -27,11 +27,12 @@ public class Post {
 
 	}
 
-	public Post(String id, Instant moment, String title, String body) {
+	public Post(String id, Instant moment, String title, String body, Author author) {
 		this.id = id;
 		this.moment = moment;
 		this.title = title;
 		this.body = body;
+		this.author = author;
 	}
 	
 	public Post(Post entity) {
@@ -71,6 +72,18 @@ public class Post {
 
 	public void setBody(String body) {
 		this.body = body;
+	}
+
+	public Author getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(Author author) {
+		this.author = author;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
 	}
 
 }
