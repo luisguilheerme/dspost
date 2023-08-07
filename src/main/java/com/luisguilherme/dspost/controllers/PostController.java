@@ -9,37 +9,30 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.luisguilherme.dspost.dto.PostDTO;
-import com.luisguilherme.dspost.dto.UserDTO;
-import com.luisguilherme.dspost.services.UserService;
+import com.luisguilherme.dspost.services.PostService;
 
 @RestController
-@RequestMapping(value = "/users")
-public class UserController {
+@RequestMapping(value = "/posts")
+public class PostController {
 
 	@Autowired
-	UserService service;
-
-	@GetMapping
-	public ResponseEntity<List<UserDTO>> findAll() {
-		List<UserDTO> result = service.findAll();
-		return ResponseEntity.ok().body(result);
-	}
+	PostService service;
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<UserDTO> findById(@PathVariable String id) {
-		UserDTO dto = service.findById(id);
+	public ResponseEntity<PostDTO> findById(@PathVariable String id) {
+		PostDTO dto = service.findById(id);
 		return ResponseEntity.ok().body(dto);
 	}
 
 	@PostMapping
-	public ResponseEntity<UserDTO> insert(@RequestBody UserDTO dto) {
+	public ResponseEntity<PostDTO> insert(@RequestBody PostDTO dto) {
 		dto = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
 		return ResponseEntity.created(uri).body(dto);
@@ -50,16 +43,10 @@ public class UserController {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-
-	@PutMapping(value="/{id}")
- 	public ResponseEntity<UserDTO> update(@PathVariable String id, @RequestBody UserDTO dto) {
-		dto = service.update(id, dto);
-		return ResponseEntity.ok().body(dto);
-	}
 	
-	@GetMapping(value="/{id}/posts")
- 	public ResponseEntity<List<PostDTO>> getUserPosts(@PathVariable String id) {
-		List<PostDTO> list = service.getUserPosts(id);
+	@GetMapping(value="/search")
+ 	public ResponseEntity<List<PostDTO>> findByText(@RequestParam(value="text", defaultValue="") String text) {
+		List<PostDTO> list = service.findByText(text);
 		return ResponseEntity.ok().body(list);
 	}
 
